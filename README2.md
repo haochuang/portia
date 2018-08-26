@@ -21,8 +21,11 @@ Python：2.7
 我们拟定将Portia安装在/opt目录下面
 
 1、克隆Portia
+```
 cd /opt
 sudo git clone https://github.com/scrapinghub/portia.git
+```
+
 如果没有git的话，执行sudo apt-get install git安装Git
 
 2、不要使用虚拟环境
@@ -33,39 +36,74 @@ portia和splash的脚本的写法不同，导致pyenv和virtualenv生效的情�
 结论是，我输了，我使用系统的Python2.7来安装。
 
 3、安装脚本
+
+```
 cd portia
 sudo ./provision.sh install_deps install_splash install_python_deps
+```
+
 接下来可以等待安装完成。
 
 4、替换下载慢的脚本(可选)
 这步是可选的，如果sip或者PyQt下载的比较慢，可以先手动下载好。
-http://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
-http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz
-分别改名为sip.tar.gz和pyqt5.tar.gz放在/downlaods目录中，/downloads没有就新建一个。
-然后vi /tmp/splash-2.3.x/dockerfiles/splash/provision.sh把
+```
+wget http://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
+wget http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz
+```
 
+分别改名为sip.tar.gz和pyqt5.tar.gz放在/downlaods目录中，/downloads没有就新建一个。
+然后
+
+```
+vi /tmp/splash-2.3.x/dockerfiles/splash/provision.sh
+```
+
+把
+```
 #curl -L -o /downloads/sip.tar.gz http://sourceforge.net/projects/pyqt/files/sip/sip-${SPLASH_SIP_VERSION}/sip-${SPLASH_SIP_VERSION}.tar.gz && \
 #curl -L -o /downloads/pyqt5.tar.gz http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-${SPLASH_PYQT_VERSION}/PyQt-gpl-${SPLASH_PYQT_VERSION}.tar.gz && \
-注释掉，保存退出。再次在portia目录下执行./provision.sh install_splash
+```
+
+注释掉，保存退出。
+
+再次在portia目录下,执行
+
+```
+./provision.sh install_splash
+```
+
 最后等待安装，当然，如果你网络好，这步可以忽略。
 
 5、配置nginx
+
+```
 vi nginx/nginx.conf
+```
+
 修改：
+
 ```
 root /opt/portia/portiaui/dist;
 location /static {
    alias /opt/portia/portiaui/dist;
 }
 ```
+
 保存退出。
-执行 ``` sudo ./provision.sh configure_nginx configure_initctl```
+执行 
+
+```
+sudo ./provision.sh configure_nginx configure_initctl
+```
 
 6、安装前端依赖和UI
-``` sudo ./provision.sh install_frontend_deps build_assets ```
+```
+sudo ./provision.sh install_frontend_deps build_assets 
+```
 
 7、运行
 前面的准备工作都做好了，现在运行Portia
+
 ```
 export PYTHONPATH='/opt/portia/portia_server:/opt/portia/slyd:/opt/portia/slybot'
 slyd/bin/slyd -p 9002 -r portiaui/dist & portia_server/manage.py runserver
