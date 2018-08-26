@@ -115,7 +115,7 @@ slyd/bin/slyd -p 9002 -r portiaui/dist & portia_server/manage.py runserver
 
 在ctrl+c停掉应用后，再次启动会被提示端口已占用。这个时候使用ps -ef | grep slyd，把对应的slyd端口kill掉
 
-该说明摘自：
+该说明，部分摘自：
 
 https://www.cnblogs.com/ginponson/p/7102411.html
 
