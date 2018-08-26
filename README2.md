@@ -52,27 +52,32 @@ http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.g
 5、配置nginx
 vi nginx/nginx.conf
 修改：
-
+```
 root /opt/portia/portiaui/dist;
 location /static {
    alias /opt/portia/portiaui/dist;
 }
+```
 保存退出。
-执行sudo ./provision.sh configure_nginx configure_initctl
+执行 ``` sudo ./provision.sh configure_nginx configure_initctl```
 
 6、安装前端依赖和UI
-sudo ./provision.sh install_frontend_deps build_assets
+``` sudo ./provision.sh install_frontend_deps build_assets ```
 
 7、运行
 前面的准备工作都做好了，现在运行Portia
+```
 export PYTHONPATH='/opt/portia/portia_server:/opt/portia/slyd:/opt/portia/slybot'
 slyd/bin/slyd -p 9002 -r portiaui/dist & portia_server/manage.py runserver
+```
 
-现在打开浏览器http://localhost:9001爽爽吧！
+现在打开浏览器  http://localhost:9001  爽爽吧！
 
 题外话
+
 在ctrl+c停掉应用后，再次启动会被提示端口已占用。这个时候使用ps -ef | grep slyd，把对应的slyd端口kill掉
 
 该说明摘自：
+
 https://www.cnblogs.com/ginponson/p/7102411.html
 
